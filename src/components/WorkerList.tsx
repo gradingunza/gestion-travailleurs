@@ -82,7 +82,7 @@ const WorkerList: React.FC = () => {
   }
 
   const handleEdit = (worker: Worker) => {
-    if (!isUserLoggedIn) return // Empêcher l'édition si l'utilisateur n'est pas connecté
+    if (!isUserLoggedIn) return
     setEditingWorker(worker)
   }
 
@@ -91,7 +91,7 @@ const WorkerList: React.FC = () => {
   }
 
   const handleDelete = async (workerId: string) => {
-    if (!isUserLoggedIn) return // Empêcher la suppression si l'utilisateur n'est pas connecté
+    if (!isUserLoggedIn) return
     
     try {
       const { error } = await supabase
@@ -103,7 +103,7 @@ const WorkerList: React.FC = () => {
 
       showMessage('success', 'Travailleur supprimé avec succès')
       setDeleteConfirm(null)
-      fetchWorkers() // Rafraîchir la liste
+      fetchWorkers()
     } catch (error) {
       console.error('Erreur:', error)
       showMessage('error', 'Erreur lors de la suppression')
@@ -112,7 +112,7 @@ const WorkerList: React.FC = () => {
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!editingWorker || !isUserLoggedIn) return // Empêcher la mise à jour si l'utilisateur n'est pas connecté
+    if (!editingWorker || !isUserLoggedIn) return
 
     try {
       const { error } = await supabase
@@ -133,7 +133,7 @@ const WorkerList: React.FC = () => {
 
       showMessage('success', 'Travailleur modifié avec succès')
       setEditingWorker(null)
-      fetchWorkers() // Rafraîchir la liste
+      fetchWorkers()
     } catch (error) {
       console.error('Erreur:', error)
       showMessage('error', 'Erreur lors de la modification')
@@ -211,7 +211,7 @@ const WorkerList: React.FC = () => {
         </div>
       )}
 
-      {/* Header Mobile Optimisé */}
+      {/* Header avec Affichage Utilisateur Amélioré */}
       <div className="worker-list-header">
         <div className="header-top">
           <div className="header-content">
@@ -219,30 +219,63 @@ const WorkerList: React.FC = () => {
             <p>Consultez et gérez les collaborateurs</p>
           </div>
           
-          <div className="user-info-mobile">
-            <div className="user-avatar-mobile">
-              {userEmail ? userEmail[0].toUpperCase() : 'U'}
-            </div>
-            <div className="user-details-mobile">
-              <div className="user-email-mobile" title={userEmail}>
-                {userEmail ? userEmail.split('@')[0] : 'Utilisateur'}
+          {/* Affichage Utilisateur Connecté - Version Améliorée */}
+          <div className={`user-profile-card ${isUserLoggedIn ? 'connected' : 'disconnected'}`}>
+            <div className="user-profile-main">
+              <div className="user-avatar-wrapper">
+                <div className="user-avatar">
+                  {userEmail ? userEmail[0].toUpperCase() : 'U'}
+                </div>
+                <div className={`connection-status ${isUserLoggedIn ? 'online' : 'offline'}`}></div>
               </div>
-              <div className="user-status">
-                {isUserLoggedIn ? 'Connecté' : 'Non connecté'}
+              <div className="user-info">
+                <div className="user-identity">
+                  <span className="user-name">
+                    {userEmail ? userEmail.split('@')[0] : 'Invité'}
+                  </span>
+                  <span className="user-role">
+                    {isUserLoggedIn ? 'Administrateur' : 'Visiteur'}
+                  </span>
+                </div>
+                <div className="user-email" title={userEmail}>
+                  {userEmail || 'Non connecté'}
+                </div>
               </div>
             </div>
-            <div className={`status-dot-mobile ${isUserLoggedIn ? 'connected' : 'disconnected'}`}></div>
+            <div className="user-stats">
+              <div className="user-stat">
+                <span className="stat-icon">👥</span>
+                <span className="stat-value">{workers.length}</span>
+                <span className="stat-label">Travailleurs</span>
+              </div>
+            </div>
           </div>
         </div>
 
+        {/* Stats Globales */}
         <div className="header-stats">
-          <div className="stat-card">
-            <span className="stat-number">{workers.length}</span>
-            <span className="stat-label">Total</span>
+          <div className="stat-card primary">
+            <div className="stat-icon">📊</div>
+            <div className="stat-content">
+              <span className="stat-number">{workers.length}</span>
+              <span className="stat-label">Total</span>
+            </div>
           </div>
-          <div className="stat-card">
-            <span className="stat-number">{filteredWorkers.length}</span>
-            <span className="stat-label">Résultats</span>
+          <div className="stat-card secondary">
+            <div className="stat-icon">🔍</div>
+            <div className="stat-content">
+              <span className="stat-number">{filteredWorkers.length}</span>
+              <span className="stat-label">Résultats</span>
+            </div>
+          </div>
+          <div className="stat-card accent">
+            <div className="stat-icon">🏢</div>
+            <div className="stat-content">
+              <span className="stat-number">
+                {[...new Set(workers.map(w => w.departement))].length}
+              </span>
+              <span className="stat-label">Départements</span>
+            </div>
           </div>
         </div>
       </div>
