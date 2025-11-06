@@ -1,7 +1,7 @@
 // src/App.tsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Auth from './components/Auth'
-import Home from './components/home'
+import Home from './components/Home'
 import AddWorker from './components/AddWorker'
 import WorkerList from './components/WorkerList'
 import ProtectedRoute from './components/ProtectedRoute'
