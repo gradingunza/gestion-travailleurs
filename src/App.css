@@ -1076,7 +1076,6 @@
   font-size: 15px;
   transition: all 0.2s ease;
   width: 100%;
-  -webkit-appearance: none;
 }
 
 .form-input-mobile:focus,

@@ -111,37 +111,6 @@ const WorkerList: React.FC = () => {
       showMessage('error', 'Erreur lors de la suppression')
     }
   }
-
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!editingWorker || !isUserLoggedIn) return
-
-    try {
-      const { error } = await supabase
-        .from('travailleurs')
-        .update({
-          nom: editingWorker.nom,
-          postnom: editingWorker.postnom,
-          prenom: editingWorker.prenom,
-          telephone: editingWorker.telephone,
-          departement: editingWorker.departement,
-          sexe: editingWorker.sexe,
-          niveau_etudes: editingWorker.niveau_etudes,
-          date_adhesion: editingWorker.date_adhesion
-        })
-        .eq('id', editingWorker.id)
-
-      if (error) throw error
-
-      showMessage('success', 'Travailleur modifié avec succès')
-      setEditingWorker(null)
-      fetchWorkers()
-    } catch (error) {
-      console.error('Erreur:', error)
-      showMessage('error', 'Erreur lors de la modification')
-    }
-  }
-
   const handleBack = () => {
     navigate('/home')
   }
@@ -476,7 +445,11 @@ const WorkerList: React.FC = () => {
                         <button 
                           className={`action-btn danger ${!isUserLoggedIn ? 'disabled' : ''}`} 
                           title={isUserLoggedIn ? "Supprimer" : "Connectez-vous pour supprimer"}
-                          onClick={() => isUserLoggedIn && setDeleteConfirm(worker.id)}
+                          onClick={() => {
+                            if (isUserLoggedIn) {
+                              handleDelete(worker.id);
+                            }
+                          }}
                           disabled={!isUserLoggedIn}
                         >
                           🗑️

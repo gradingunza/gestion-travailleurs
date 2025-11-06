@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase/client'
 
-const Home: React.FC = () => {
+const home: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(true)
   const navigate = useNavigate()
@@ -160,4 +160,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default home
