@@ -5,14 +5,16 @@ import { supabase } from '../supabase/client'
 
 export const useAuth = () => {
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Récupérer la session initiale
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setLoading(false)
     })
 
+    // Écouter les changements d'authentification
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {

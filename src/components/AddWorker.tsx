@@ -1,5 +1,6 @@
 // src/components/AddWorker.tsx
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase/client'
 import type { WorkerFormData } from '../types'
 
@@ -48,6 +49,7 @@ const AddWorker: React.FC = () => {
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const navigate = useNavigate()
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -109,14 +111,36 @@ const AddWorker: React.FC = () => {
     }
   }
 
+  const handleBack = () => {
+    navigate('/home')
+  }
+
+  const handleViewWorkers = () => {
+    navigate('/worker-list')
+  }
+
   return (
     <div className="add-worker-container">
+      {/* Boutons de navigation - VERSION AMÉLIORÉE */}
+      <div className="navigation-buttons top-position">
+        <button onClick={handleViewWorkers} className="secondary-btn">
+          <span className="btn-icon">👥</span>
+          Voir la liste
+        </button>
+        <button onClick={handleBack} className="back-btn">
+          <span className="btn-icon">🏠</span>
+          Retour à l'accueil
+        </button>
+      </div>
+
       <div className="add-worker-card">
-        {/* Header Mobile Optimisé */}
+        {/* Header avec bouton retour */}
         <div className="form-header-mobile">
-          <div className="header-content-mobile">
-            <h2>Ajouter un Travailleur</h2>
-            <p>Nouveau collaborateur</p>
+          <div className="header-with-back">
+            <div className="header-content-mobile">
+              <h2>Ajouter un Travailleur</h2>
+              <p>Nouveau collaborateur</p>
+            </div>
           </div>
         </div>
 

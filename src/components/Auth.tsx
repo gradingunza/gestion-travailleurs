@@ -1,5 +1,6 @@
 // src/components/Auth.tsx
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase/client'
 import type { AuthFormData } from '../types'
 
@@ -13,13 +14,13 @@ const Auth: React.FC = () => {
     password: ''
   })
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     })
-    // Clear message when user starts typing
     if (message) setMessage(null)
   }
 
@@ -58,6 +59,9 @@ const Auth: React.FC = () => {
           password: formData.password
         })
         if (error) throw error
+        
+        // Redirection vers la page d'accueil après connexion réussie
+        navigate('/home')
       }
     } catch (error) {
       console.error('Erreur auth:', error)
